@@ -1,0 +1,23 @@
+cabal-version:      2.4
+name:               bitonic-sequence-generator
+version:            0.1.0.0
+synopsis:           Generate bitonic sequences from a given range
+description:        A library to generate bitonic sequences of length N 
+                    from integers in a given range [l, r]
+license:            MIT
+build-type:         Simple
+
+library
+    exposed-modules:  BitonicSequence
+    build-depends:    base ^>=4.18
+    hs-source-dirs:   .
+    default-language: Haskell2010
+
+test-suite bitonic-sequence-test
+    type:             exitcode-stdio-1.0
+    main-is:          BitonicSequenceTest.hs
+    build-depends:    base ^>=4.18,
+                      HUnit >=1.6,
+                      bitonic-sequence-generator
+    hs-source-dirs:   .
+    default-language: Haskell2010

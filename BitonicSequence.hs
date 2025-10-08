@@ -1,3 +1,5 @@
+module BitonicSequence (bitonicArray) where
+
 -- Function to construct bitonic sequence of 
 -- length n from integers in the range [l, r]
 bitonicArray :: Int -> Int -> Int -> [Int]
@@ -31,12 +33,3 @@ addIncreasing current _ n | length current >= n = current
 addIncreasing current (x:xs) n 
     | length current >= n = current
     | otherwise = addIncreasing (x : current) xs n
-
--- Main function
-main :: IO ()
-main = do
-    let n = 5
-        l = 3
-        r = 10
-        res = bitonicArray n l r
-    putStrLn $ unwords $ map show res
