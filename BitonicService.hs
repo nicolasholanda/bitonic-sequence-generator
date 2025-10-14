@@ -3,6 +3,8 @@
 module BitonicService where
 
 import BitonicSequence (bitonicArray)
+import qualified BitonicRepository as Repo
+import Database.Redis (Connection)
 import GHC.Generics
 import Data.Aeson (ToJSON, FromJSON)
 
@@ -22,8 +24,17 @@ data BitonicResponse = BitonicResponse
 
 instance ToJSON BitonicResponse
 
-generateBitonic :: BitonicRequest -> IO BitonicResponse
-generateBitonic req = do
-    let sequence = bitonicArray (n req) (l req) (r req)
-    let response = BitonicResponse req sequence
-    return response
+toRepoRequest :: BitonicRequest -> Repo.BitonicRequest
+toRepoRequest req = Repo.BitonicRequest (n req) (l req) (r req)
+
+generateBitonic :: Connection -> BitonicRequest -> IO BitonicResponse
+generateBitonic conn req = do
+    let repoReq = toRepoRequest req
+    cached <- Repo.findBitonic conn repoReq
+    
+    case cached of
+        Just sequence -> return $ BitonicResponse req sequence
+        Nothing -> do
+            let sequence = bitonicArray (n req) (l req) (r req)
+            Repo.saveBitonic conn repoReq sequence
+            return $ BitonicResponse req sequence
