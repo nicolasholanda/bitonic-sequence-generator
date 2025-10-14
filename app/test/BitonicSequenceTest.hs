@@ -36,8 +36,8 @@ main = do
     putStrLn ""
     if errors counts + failures counts == 0
         then do
-            putStrLn "✓ Test passed!"
+            putStrLn "[PASS] All tests passed!"
             exitSuccess
         else do
-            putStrLn "✗ Test failed!"
+            putStrLn "[FAIL] Some tests failed!"
             exitFailure
