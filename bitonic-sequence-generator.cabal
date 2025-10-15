@@ -13,6 +13,14 @@ library
     hs-source-dirs:   .
     default-language: Haskell2010
 
+executable bitonic-api
+    main-is:          Api.hs
+    build-depends:    base ^>=4.18,
+                      scotty >=0.12,
+                      bitonic-sequence-generator
+    hs-source-dirs:   .
+    default-language: Haskell2010
+
 test-suite bitonic-sequence-test
     type:             exitcode-stdio-1.0
     main-is:          BitonicSequenceTest.hs
