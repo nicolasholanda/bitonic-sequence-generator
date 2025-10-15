@@ -23,7 +23,7 @@ library
 executable bitonic-api
     import:           shared-properties
     hs-source-dirs:   app
-    main-is:          Api.hs
+    main-is:          src/Api.hs
     build-depends:    bitonic-api,
                       scotty >=0.12,
                       text,
