@@ -29,7 +29,7 @@ executable bitonic-api
                       text,
                       hedis >=0.15,
                       bytestring,
-                      bitonic-api
+                      http-types
 
 
 test-suite bitonic-test
