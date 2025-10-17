@@ -3,7 +3,8 @@
 module Main where
 
 import Web.Scotty
-import BitonicService (BitonicRequest(..), generateBitonic)
+import BitonicModels (BitonicRequest(..))
+import BitonicService (generateBitonic)
 import qualified Database.Redis as Redis
 
 main :: IO ()

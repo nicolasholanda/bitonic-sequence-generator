@@ -2,23 +2,11 @@
 
 module BitonicRepository where
 
+import BitonicModels (BitonicRequest(..))
 import Database.Redis
 import qualified Data.Aeson as Aeson
 import Data.ByteString.Lazy (toStrict, fromStrict)
-import Data.Text (Text, pack)
-import qualified Data.Text as T
 import qualified Data.ByteString.Char8 as BS
-
-data BitonicRequest = BitonicRequest
-    { n :: Int
-    , l :: Int
-    , r :: Int
-    } deriving (Show, Eq)
-
-data BitonicResponse = BitonicResponse
-    { request :: BitonicRequest
-    , result :: [Int]
-    } deriving (Show)
 
 makeRedisKey :: BitonicRequest -> BS.ByteString
 makeRedisKey req = BS.pack $ "bitonic:" ++ show (n req) ++ ":" ++ show (l req) ++ ":" ++ show (r req)

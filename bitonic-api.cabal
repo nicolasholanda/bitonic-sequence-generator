@@ -14,7 +14,7 @@ common shared-properties
 
 library
     import:           shared-properties
-    exposed-modules:  BitonicSequence, BitonicService, BitonicRepository
+    exposed-modules:  BitonicSequence, BitonicModels, BitonicService, BitonicRepository
     hs-source-dirs:   app/src
     build-depends:    hedis >=0.15,
                       bytestring,
