@@ -3,6 +3,7 @@ module Main where
 import Test.HUnit
 import qualified Database.Redis as Redis
 import qualified Data.ByteString.Char8 as BS
+import BitonicModels (BitonicRequest(..))
 import BitonicRepository
 import System.Exit (exitSuccess, exitFailure)
 import Control.Exception (try, SomeException)
@@ -15,8 +16,8 @@ connectRedis = do
     _ <- Redis.runRedis conn $ Redis.flushdb
     pure conn
 
-mkReq :: Int -> Int -> Int -> Repo.BitonicRequest
-mkReq n l r = Repo.BitonicRequest { Repo.n = n, Repo.l = l, Repo.r = r }
+mkReq :: Int -> Int -> Int -> BitonicRequest
+mkReq n l r = BitonicRequest { n = n, l = l, r = r }
 
 testMakeRedisKey :: Test
 testMakeRedisKey = TestCase $ do

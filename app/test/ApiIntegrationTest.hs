@@ -16,15 +16,21 @@ import qualified Data.Aeson.Types as AT
 import Control.Exception (try, SomeException)
 import System.Exit (exitSuccess, exitFailure)
 
-import BitonicService (BitonicRequest(..), generateBitonic)
+import BitonicModels (BitonicRequest(..), BitonicResponse(..))
+import BitonicService (generateBitonic, ServiceError(..))
+import ApiError (ApiError(..), handleError)
 
 mkApp :: Redis.Connection -> IO Application
 mkApp conn = S.scottyApp $ do
     S.get "/" $ S.text "Bitonic Sequence Generator API"
     S.post "/bitonic" $ do
         req <- S.jsonData :: S.ActionM BitonicRequest
-        resp <- S.liftAndCatchIO $ generateBitonic conn req
-        S.json resp
+        result <- S.liftIO $ generateBitonic conn req
+        case result of
+            Right resp -> S.json resp
+            Left (InvalidParameters msg) -> handleError (InvalidRequest msg)
+            Left (RedisError msg) -> handleError (ServiceUnavailable msg)
+            Left (UnknownError msg) -> handleError (InternalError msg)
 
 -- Helper to connect and flush DB
 connectRedis :: IO (Either SomeException Redis.Connection)

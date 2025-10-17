@@ -2,6 +2,7 @@ module Main where
 
 import Test.HUnit
 import qualified Database.Redis as Redis
+import BitonicModels (BitonicRequest(..), BitonicResponse(..))
 import BitonicService
 import qualified BitonicRepository as Repo
 import System.Exit (exitSuccess, exitFailure)
@@ -26,19 +27,22 @@ testCacheMissThenHit = TestCase $ do
             assertBool "Skipped due to missing Redis" True
         Right conn -> do
             let req = mkReq 5 3 10
-            let repoReq = Repo.BitonicRequest (n req) (l req) (r req)
-            initial <- Repo.findBitonic conn repoReq
+            initial <- Repo.findBitonic conn req
             assertEqual "Expected no cached value initially" Nothing initial
 
-            resp1 <- generateBitonic conn req
+            eitherResp1 <- generateBitonic conn req
             let expected = [9,10,9,8,7]
-            assertEqual "First response result should match expected sequence" expected (result resp1)
+            case eitherResp1 of
+                Right resp1 -> assertEqual "First response result should match expected sequence" expected (result resp1)
+                Left err -> assertFailure $ "Expected Right but got Left: " ++ show err
 
-            cached <- Repo.findBitonic conn repoReq
+            cached <- Repo.findBitonic conn req
             assertEqual "Sequence should be cached after first call" (Just expected) cached
 
-            resp2 <- generateBitonic conn req
-            assertEqual "Second response result should match expected sequence (cache hit)" expected (result resp2)
+            eitherResp2 <- generateBitonic conn req
+            case eitherResp2 of
+                Right resp2 -> assertEqual "Second response result should match expected sequence (cache hit)" expected (result resp2)
+                Left err -> assertFailure $ "Expected Right but got Left: " ++ show err
 
 testDifferentRequestsAreIndependent :: Test
 testDifferentRequestsAreIndependent = TestCase $ do
@@ -54,15 +58,12 @@ testDifferentRequestsAreIndependent = TestCase $ do
             _ <- generateBitonic conn reqA
             _ <- generateBitonic conn reqB
 
-            let repoReqA = Repo.BitonicRequest (n reqA) (l reqA) (r reqA)
-            let repoReqB = Repo.BitonicRequest (n reqB) (l reqB) (r reqB)
-
-            cachedA <- Repo.findBitonic conn repoReqA
-            cachedB <- Repo.findBitonic conn repoReqB
+            cachedA <- Repo.findBitonic conn reqA
+            cachedB <- Repo.findBitonic conn reqB
 
             assertBool "Cached A should be present" (cachedA /= Nothing)
             assertBool "Cached B should be present" (cachedB /= Nothing)
-            assertBool "Cached values should differ for different requests" (cachedA /= cachedB || (repoReqA /= repoReqB))
+            assertBool "Cached values should differ for different requests" (cachedA /= cachedB || (reqA /= reqB))
 
 tests :: Test
 tests = TestList
