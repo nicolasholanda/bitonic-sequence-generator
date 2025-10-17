@@ -3,7 +3,7 @@
 module Main where
 
 import Web.Scotty
-import BitonicModels (BitonicRequest(..))
+import BitonicModels (BitonicRequest(..), BitonicResponse(..))
 import BitonicService (generateBitonic)
 import qualified Database.Redis as Redis
 import Control.Exception (try, SomeException)
