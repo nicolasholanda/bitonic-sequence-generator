@@ -30,6 +30,28 @@ Run tests:
 cabal test
 ```
 
+### Testing
+
+- Run all tests:
+	```bash
+	cabal test
+	```
+
+- Run an individual test-suite (useful while developing):
+	```bash
+	cabal test bitonic-test                 # pure unit tests for BitonicSequence
+	cabal test bitonic-service-test         # service tests (uses Redis cache)
+	cabal test bitonic-repository-test      # repository tests (reads/writes Redis)
+	cabal test bitonic-api-integration-test # in-memory API integration tests (Redis)
+	```
+
+Notes:
+- Redis-backed tests (service/repository/API) expect a Redis instance running. You can start it with:
+	```bash
+	docker-compose up -d
+	```
+- If Redis is not available, those tests will be skipped automatically so the rest of the suite can still run.
+
 ## Usage
 
 POST to `http://localhost:3000/bitonic` with JSON body:
