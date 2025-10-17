@@ -5,9 +5,10 @@ module BitonicService where
 
 import BitonicSequence (bitonicArray)
 import BitonicModels (BitonicRequest(..), BitonicResponse(..))
+import AppContext (AppM)
 import qualified BitonicRepository as Repo
-import qualified Database.Redis as Redis
 import Control.Exception (try, SomeException)
+import Control.Monad.Reader
 
 data ServiceError
     = InvalidParameters String
@@ -22,22 +23,20 @@ validateRequest req
     | r req <= l req = Left $ InvalidParameters "r must be greater than l"
     | otherwise = Right req
 
-generateBitonic :: Redis.Connection -> BitonicRequest -> IO (Either ServiceError BitonicResponse)
-generateBitonic conn req = case validateRequest req of
+generateBitonic :: BitonicRequest -> AppM (Either ServiceError BitonicResponse)
+generateBitonic req = case validateRequest req of
     Left err -> return $ Left err
     Right validReq -> do
-        result <- try (tryGenerate conn validReq)
-        case result of
-            Left (e :: SomeException) -> return $ Left $ RedisError $ "Redis operation failed: " ++ show e
-            Right response -> return $ Right response
+        result <- tryGenerate validReq
+        return $ Right result
   where
-    tryGenerate :: Redis.Connection -> BitonicRequest -> IO BitonicResponse
-    tryGenerate c req = do
-        cached <- Repo.findBitonic c req
+    tryGenerate :: BitonicRequest -> AppM BitonicResponse
+    tryGenerate req = do
+        cached <- Repo.findBitonic req
         
         case cached of
             Just sequence -> return $ BitonicResponse req sequence
             Nothing -> do
                 let sequence = bitonicArray (n req) (l req) (r req)
-                Repo.saveBitonic c req sequence
+                Repo.saveBitonic req sequence
                 return $ BitonicResponse req sequence

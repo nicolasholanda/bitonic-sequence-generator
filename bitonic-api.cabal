@@ -14,13 +14,14 @@ common shared-properties
 
 library
     import:           shared-properties
-    exposed-modules:  BitonicSequence, BitonicModels, BitonicService, BitonicRepository, ApiError
+    exposed-modules:  BitonicSequence, BitonicModels, BitonicService, BitonicRepository, ApiError, AppContext, BitonicController
     hs-source-dirs:   app/src
     build-depends:    hedis >=0.15,
                       bytestring,
                       text,
                       scotty >=0.12,
-                      http-types
+                      http-types,
+                      mtl
 
 executable bitonic-api
     import:           shared-properties
