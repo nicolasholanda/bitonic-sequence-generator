@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
+</span><span id="line-2"></span><span>
+</span><span id="line-3"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">BitonicModels</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-4"></span><span>
+</span><span id="line-5"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.Generics</span></span><span>
+</span><span id="line-6"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.html"><span class="hs-identifier">Data.Aeson</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Types.ToJSON.html#ToJSON"><span class="hs-identifier">ToJSON</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Types.FromJSON.html#FromJSON"><span class="hs-identifier">FromJSON</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-7"></span><span>
+</span><span id="line-8"></span><span class="hs-keyword">data</span><span> </span><span id="BitonicRequest"><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-var">BitonicRequest</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="BitonicRequest"><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-var">BitonicRequest</span></a></span></span><span>
+</span><span id="line-9"></span><span>    </span><span class="hs-special">{</span><span> </span><span id="n"><span class="annot"><span class="annottext">BitonicRequest -&gt; Int
+</span><a href="BitonicModels.html#n"><span class="hs-identifier hs-var hs-var">n</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-10"></span><span>    </span><span class="hs-special">,</span><span> </span><span id="l"><span class="annot"><span class="annottext">BitonicRequest -&gt; Int
+</span><a href="BitonicModels.html#l"><span class="hs-identifier hs-var hs-var">l</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-11"></span><span>    </span><span class="hs-special">,</span><span> </span><span id="r"><span class="annot"><span class="annottext">BitonicRequest -&gt; Int
+</span><a href="BitonicModels.html#r"><span class="hs-identifier hs-var hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-12"></span><span>    </span><span class="hs-special">}</span><span> </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679120441"><span id="local-6989586621679120443"><span class="annot"><span class="annottext">(forall x. BitonicRequest -&gt; Rep BitonicRequest x)
+-&gt; (forall x. Rep BitonicRequest x -&gt; BitonicRequest)
+-&gt; Generic BitonicRequest
+forall x. Rep BitonicRequest x -&gt; BitonicRequest
+forall x. BitonicRequest -&gt; Rep BitonicRequest x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. BitonicRequest -&gt; Rep BitonicRequest x
+from :: forall x. BitonicRequest -&gt; Rep BitonicRequest x
+$cto :: forall x. Rep BitonicRequest x -&gt; BitonicRequest
+to :: forall x. Rep BitonicRequest x -&gt; BitonicRequest
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679120447"><span id="local-6989586621679120455"><span id="local-6989586621679120459"><span class="annot"><span class="annottext">Int -&gt; BitonicRequest -&gt; ShowS
+[BitonicRequest] -&gt; ShowS
+BitonicRequest -&gt; String
+(Int -&gt; BitonicRequest -&gt; ShowS)
+-&gt; (BitonicRequest -&gt; String)
+-&gt; ([BitonicRequest] -&gt; ShowS)
+-&gt; Show BitonicRequest
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; BitonicRequest -&gt; ShowS
+showsPrec :: Int -&gt; BitonicRequest -&gt; ShowS
+$cshow :: BitonicRequest -&gt; String
+show :: BitonicRequest -&gt; String
+$cshowList :: [BitonicRequest] -&gt; ShowS
+showList :: [BitonicRequest] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679120463"><span id="local-6989586621679120469"><span class="annot"><span class="annottext">BitonicRequest -&gt; BitonicRequest -&gt; Bool
+(BitonicRequest -&gt; BitonicRequest -&gt; Bool)
+-&gt; (BitonicRequest -&gt; BitonicRequest -&gt; Bool) -&gt; Eq BitonicRequest
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+$c== :: BitonicRequest -&gt; BitonicRequest -&gt; Bool
+== :: BitonicRequest -&gt; BitonicRequest -&gt; Bool
+$c/= :: BitonicRequest -&gt; BitonicRequest -&gt; Bool
+/= :: BitonicRequest -&gt; BitonicRequest -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-13"></span><span>
+</span><span id="line-14"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679120474"><span id="local-6989586621679120481"><span id="local-6989586621679120484"><span id="local-6989586621679120487"><span id="local-6989586621679120490"><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Types.ToJSON.html#ToJSON"><span class="hs-identifier hs-type">ToJSON</span></a></span><span> </span><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-type">BitonicRequest</span></a></span></span></span></span></span></span><span>
+</span><span id="line-15"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679120602"><span id="local-6989586621679120609"><span id="local-6989586621679120612"><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Types.FromJSON.html#FromJSON"><span class="hs-identifier hs-type">FromJSON</span></a></span><span> </span><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-type">BitonicRequest</span></a></span></span></span></span><span>
+</span><span id="line-16"></span><span>
+</span><span id="line-17"></span><span class="hs-keyword">data</span><span> </span><span id="BitonicResponse"><span class="annot"><a href="BitonicModels.html#BitonicResponse"><span class="hs-identifier hs-var">BitonicResponse</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="BitonicResponse"><span class="annot"><a href="BitonicModels.html#BitonicResponse"><span class="hs-identifier hs-var">BitonicResponse</span></a></span></span><span>
+</span><span id="line-18"></span><span>    </span><span class="hs-special">{</span><span> </span><span id="request"><span class="annot"><span class="annottext">BitonicResponse -&gt; BitonicRequest
+</span><a href="BitonicModels.html#request"><span class="hs-identifier hs-var hs-var">request</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-type">BitonicRequest</span></a></span><span>
+</span><span id="line-19"></span><span>    </span><span class="hs-special">,</span><span> </span><span id="result"><span class="annot"><span class="annottext">BitonicResponse -&gt; [Int]
+</span><a href="BitonicModels.html#result"><span class="hs-identifier hs-var hs-var">result</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">]</span><span>
+</span><span id="line-20"></span><span>    </span><span class="hs-special">}</span><span> </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679120690"><span id="local-6989586621679120692"><span class="annot"><span class="annottext">(forall x. BitonicResponse -&gt; Rep BitonicResponse x)
+-&gt; (forall x. Rep BitonicResponse x -&gt; BitonicResponse)
+-&gt; Generic BitonicResponse
+forall x. Rep BitonicResponse x -&gt; BitonicResponse
+forall x. BitonicResponse -&gt; Rep BitonicResponse x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. BitonicResponse -&gt; Rep BitonicResponse x
+from :: forall x. BitonicResponse -&gt; Rep BitonicResponse x
+$cto :: forall x. Rep BitonicResponse x -&gt; BitonicResponse
+to :: forall x. Rep BitonicResponse x -&gt; BitonicResponse
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679120695"><span id="local-6989586621679120702"><span id="local-6989586621679120706"><span class="annot"><span class="annottext">Int -&gt; BitonicResponse -&gt; ShowS
+[BitonicResponse] -&gt; ShowS
+BitonicResponse -&gt; String
+(Int -&gt; BitonicResponse -&gt; ShowS)
+-&gt; (BitonicResponse -&gt; String)
+-&gt; ([BitonicResponse] -&gt; ShowS)
+-&gt; Show BitonicResponse
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; BitonicResponse -&gt; ShowS
+showsPrec :: Int -&gt; BitonicResponse -&gt; ShowS
+$cshow :: BitonicResponse -&gt; String
+show :: BitonicResponse -&gt; String
+$cshowList :: [BitonicResponse] -&gt; ShowS
+showList :: [BitonicResponse] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-21"></span><span>
+</span><span id="line-22"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679120709"><span id="local-6989586621679120716"><span id="local-6989586621679120719"><span id="local-6989586621679120722"><span id="local-6989586621679120725"><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Types.ToJSON.html#ToJSON"><span class="hs-identifier hs-type">ToJSON</span></a></span><span> </span><span class="annot"><a href="BitonicModels.html#BitonicResponse"><span class="hs-identifier hs-type">BitonicResponse</span></a></span></span></span></span></span></span><span>
+</span><span id="line-23"></span></pre></body></html>

@@ -68,3 +68,8 @@ Response:
 
 https://kuniga.wordpress.com/2010/12/17/ordenacao-bitonica/
 https://www.cin.ufpe.br/~joa/menu_options/school/cursos/ppd/Projetos/BitonicMergeSortJonasSergio/BitonicMergeSort_Scientific.pdf
+
+## Haddock
+
+[Report](./haddock/index.html)
+

@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
+</span><span id="line-2"></span><span>
+</span><span id="line-3"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">BitonicRepository</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-4"></span><span>
+</span><span id="line-5"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="BitonicModels.html"><span class="hs-identifier">BitonicModels</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier">BitonicRequest</span></a></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-6"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/hedis-0.15.2-3c57487271d2d9faa7487ebd6c14ea7426ac364d45432096518d7bccf4a5ff74/share/doc/html/src/Database.Redis.html"><span class="hs-identifier">Database.Redis</span></a></span><span>
+</span><span id="line-7"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.html"><span class="hs-identifier">Data.Aeson</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Aeson</span></span><span>
+</span><span id="line-8"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString.Lazy</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">toStrict</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">fromStrict</span></span><span class="hs-special">)</span><span>
+</span><span id="line-9"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString.Char8</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">BS</span></span><span>
+</span><span id="line-10"></span><span>
+</span><span id="line-11"></span><span class="annot"><a href="BitonicRepository.html#makeRedisKey"><span class="hs-identifier hs-type">makeRedisKey</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-type">BitonicRequest</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">BS.ByteString</span></span><span>
+</span><span id="line-12"></span><span id="makeRedisKey"><span class="annot"><span class="annottext">makeRedisKey :: BitonicRequest -&gt; ByteString
+</span><a href="BitonicRepository.html#makeRedisKey"><span class="hs-identifier hs-var hs-var">makeRedisKey</span></a></span></span><span> </span><span id="local-6989586621679120845"><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120845"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; ByteString
+</span><span class="hs-identifier hs-var">BS.pack</span></span><span> </span><span class="annot"><span class="annottext">([Char] -&gt; ByteString) -&gt; [Char] -&gt; ByteString
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Char]
+</span><span class="hs-string">&quot;bitonic:&quot;</span></span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; [Char] -&gt; [Char]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; [Char]
+forall a. Show a =&gt; a -&gt; [Char]
+</span><span class="hs-identifier hs-var">show</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">BitonicRequest -&gt; Int
+</span><a href="BitonicModels.html#n"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120845"><span class="hs-identifier hs-var">req</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; [Char] -&gt; [Char]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">[Char]
+</span><span class="hs-string">&quot;:&quot;</span></span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; [Char] -&gt; [Char]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; [Char]
+forall a. Show a =&gt; a -&gt; [Char]
+</span><span class="hs-identifier hs-var">show</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">BitonicRequest -&gt; Int
+</span><a href="BitonicModels.html#l"><span class="hs-identifier hs-var">l</span></a></span><span> </span><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120845"><span class="hs-identifier hs-var">req</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; [Char] -&gt; [Char]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">[Char]
+</span><span class="hs-string">&quot;:&quot;</span></span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; [Char] -&gt; [Char]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; [Char]
+forall a. Show a =&gt; a -&gt; [Char]
+</span><span class="hs-identifier hs-var">show</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">BitonicRequest -&gt; Int
+</span><a href="BitonicModels.html#r"><span class="hs-identifier hs-var">r</span></a></span><span> </span><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120845"><span class="hs-identifier hs-var">req</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-13"></span><span>
+</span><span id="line-14"></span><span class="annot"><a href="BitonicRepository.html#findBitonic"><span class="hs-identifier hs-type">findBitonic</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/hedis-0.15.2-3c57487271d2d9faa7487ebd6c14ea7426ac364d45432096518d7bccf4a5ff74/share/doc/html/src/Database.Redis.Connection.html#Connection"><span class="hs-identifier hs-type">Connection</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-type">BitonicRequest</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">]</span><span class="hs-special">)</span><span>
+</span><span id="line-15"></span><span id="findBitonic"><span class="annot"><span class="annottext">findBitonic :: Connection -&gt; BitonicRequest -&gt; IO (Maybe [Int])
+</span><a href="BitonicRepository.html#findBitonic"><span class="hs-identifier hs-var hs-var">findBitonic</span></a></span></span><span> </span><span id="local-6989586621679120852"><span class="annot"><span class="annottext">Connection
+</span><a href="#local-6989586621679120852"><span class="hs-identifier hs-var">conn</span></a></span></span><span> </span><span id="local-6989586621679120853"><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120853"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-16"></span><span>    </span><span id="local-6989586621679120854"><span class="annot"><span class="annottext">Either Reply (Maybe ByteString)
+</span><a href="#local-6989586621679120854"><span class="hs-identifier hs-var">result</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Connection
+-&gt; Redis (Either Reply (Maybe ByteString))
+-&gt; IO (Either Reply (Maybe ByteString))
+forall a. Connection -&gt; Redis a -&gt; IO a
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/hedis-0.15.2-3c57487271d2d9faa7487ebd6c14ea7426ac364d45432096518d7bccf4a5ff74/share/doc/html/src/Database.Redis.Connection.html#runRedis"><span class="hs-identifier hs-var">runRedis</span></a></span><span> </span><span class="annot"><span class="annottext">Connection
+</span><a href="#local-6989586621679120852"><span class="hs-identifier hs-var">conn</span></a></span><span> </span><span class="annot"><span class="annottext">(Redis (Either Reply (Maybe ByteString))
+ -&gt; IO (Either Reply (Maybe ByteString)))
+-&gt; Redis (Either Reply (Maybe ByteString))
+-&gt; IO (Either Reply (Maybe ByteString))
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; Redis (Either Reply (Maybe ByteString))
+forall (m :: * -&gt; *) (f :: * -&gt; *).
+RedisCtx m f =&gt;
+ByteString -&gt; m (f (Maybe ByteString))
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/hedis-0.15.2-3c57487271d2d9faa7487ebd6c14ea7426ac364d45432096518d7bccf4a5ff74/share/doc/html/src/Database.Redis.Commands.html#get"><span class="hs-identifier hs-var">get</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">BitonicRequest -&gt; ByteString
+</span><a href="BitonicRepository.html#makeRedisKey"><span class="hs-identifier hs-var">makeRedisKey</span></a></span><span> </span><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120853"><span class="hs-identifier hs-var">req</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-17"></span><span>    </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Either Reply (Maybe ByteString)
+</span><a href="#local-6989586621679120854"><span class="hs-identifier hs-var">result</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-18"></span><span>        </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679120857"><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679120857"><span class="hs-identifier hs-var">value</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe [Int] -&gt; IO (Maybe [Int])
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">(Maybe [Int] -&gt; IO (Maybe [Int]))
+-&gt; Maybe [Int] -&gt; IO (Maybe [Int])
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; Maybe [Int]
+forall a. FromJSON a =&gt; ByteString -&gt; Maybe a
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Decoding.html#decode"><span class="hs-identifier hs-var">Aeson.decode</span></a></span><span> </span><span class="annot"><span class="annottext">(ByteString -&gt; Maybe [Int]) -&gt; ByteString -&gt; Maybe [Int]
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; ByteString
+</span><span class="hs-identifier hs-var">fromStrict</span></span><span> </span><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679120857"><span class="hs-identifier hs-var">value</span></a></span><span>
+</span><span id="line-19"></span><span>        </span><span class="annot"><span class="annottext">Either Reply (Maybe ByteString)
+</span><span class="hs-identifier">_</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe [Int] -&gt; IO (Maybe [Int])
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">Maybe [Int]
+forall a. Maybe a
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>
+</span><span id="line-20"></span><span>
+</span><span id="line-21"></span><span class="annot"><a href="BitonicRepository.html#saveBitonic"><span class="hs-identifier hs-type">saveBitonic</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/hedis-0.15.2-3c57487271d2d9faa7487ebd6c14ea7426ac364d45432096518d7bccf4a5ff74/share/doc/html/src/Database.Redis.Connection.html#Connection"><span class="hs-identifier hs-type">Connection</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="BitonicModels.html#BitonicRequest"><span class="hs-identifier hs-type">BitonicRequest</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-22"></span><span id="saveBitonic"><span class="annot"><span class="annottext">saveBitonic :: Connection -&gt; BitonicRequest -&gt; [Int] -&gt; IO ()
+</span><a href="BitonicRepository.html#saveBitonic"><span class="hs-identifier hs-var hs-var">saveBitonic</span></a></span></span><span> </span><span id="local-6989586621679120860"><span class="annot"><span class="annottext">Connection
+</span><a href="#local-6989586621679120860"><span class="hs-identifier hs-var">conn</span></a></span></span><span> </span><span id="local-6989586621679120861"><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120861"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span id="local-6989586621679120862"><span class="annot"><span class="annottext">[Int]
+</span><a href="#local-6989586621679120862"><span class="hs-identifier hs-var">sequence</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-23"></span><span>    </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679120863"><span class="annot"><span class="annottext">key :: ByteString
+</span><a href="#local-6989586621679120863"><span class="hs-identifier hs-var hs-var">key</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">BitonicRequest -&gt; ByteString
+</span><a href="BitonicRepository.html#makeRedisKey"><span class="hs-identifier hs-var">makeRedisKey</span></a></span><span> </span><span class="annot"><span class="annottext">BitonicRequest
+</span><a href="#local-6989586621679120861"><span class="hs-identifier hs-var">req</span></a></span><span>
+</span><span id="line-24"></span><span>    </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679120868"><span class="annot"><span class="annottext">value :: ByteString
+</span><a href="#local-6989586621679120868"><span class="hs-identifier hs-var hs-var">value</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; ByteString
+</span><span class="hs-identifier hs-var">toStrict</span></span><span> </span><span class="annot"><span class="annottext">(ByteString -&gt; ByteString) -&gt; ByteString -&gt; ByteString
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Int] -&gt; ByteString
+forall a. ToJSON a =&gt; a -&gt; ByteString
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.html#encode"><span class="hs-identifier hs-var">Aeson.encode</span></a></span><span> </span><span class="annot"><span class="annottext">[Int]
+</span><a href="#local-6989586621679120862"><span class="hs-identifier hs-var">sequence</span></a></span><span>
+</span><span id="line-25"></span><span>    </span><span class="annot"><span class="annottext">Connection
+-&gt; Redis (Either Reply Status) -&gt; IO (Either Reply Status)
+forall a. Connection -&gt; Redis a -&gt; IO a
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/hedis-0.15.2-3c57487271d2d9faa7487ebd6c14ea7426ac364d45432096518d7bccf4a5ff74/share/doc/html/src/Database.Redis.Connection.html#runRedis"><span class="hs-identifier hs-var">runRedis</span></a></span><span> </span><span class="annot"><span class="annottext">Connection
+</span><a href="#local-6989586621679120860"><span class="hs-identifier hs-var">conn</span></a></span><span> </span><span class="annot"><span class="annottext">(Redis (Either Reply Status) -&gt; IO (Either Reply Status))
+-&gt; Redis (Either Reply Status) -&gt; IO (Either Reply Status)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; ByteString -&gt; Redis (Either Reply Status)
+forall (m :: * -&gt; *) (f :: * -&gt; *).
+RedisCtx m f =&gt;
+ByteString -&gt; ByteString -&gt; m (f Status)
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/hedis-0.15.2-3c57487271d2d9faa7487ebd6c14ea7426ac364d45432096518d7bccf4a5ff74/share/doc/html/src/Database.Redis.ManualCommands.html#set"><span class="hs-identifier hs-var">set</span></a></span><span> </span><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679120863"><span class="hs-identifier hs-var">key</span></a></span><span> </span><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679120868"><span class="hs-identifier hs-var">value</span></a></span><span>
+</span><span id="line-26"></span><span>    </span><span class="annot"><span class="annottext">() -&gt; IO ()
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-27"></span></pre></body></html>

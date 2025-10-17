@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
+</span><span id="line-3"></span><span>
+</span><span id="line-4"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">ApiError</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-5"></span><span>
+</span><span id="line-6"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.Generics</span></span><span>
+</span><span id="line-7"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.html"><span class="hs-identifier">Data.Aeson</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Types.ToJSON.html#ToJSON"><span class="hs-identifier">ToJSON</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-8"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/scotty-0.22-096ace329b583f978238feb1f3bf62963d48129321c091220b496f242611c338/share/doc/html/src/Web.Scotty.html"><span class="hs-identifier">Web.Scotty</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/scotty-0.22-096ace329b583f978238feb1f3bf62963d48129321c091220b496f242611c338/share/doc/html/src/Web.Scotty.html#ActionM"><span class="hs-identifier">ActionM</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/scotty-0.22-096ace329b583f978238feb1f3bf62963d48129321c091220b496f242611c338/share/doc/html/src/Web.Scotty.html#status"><span class="hs-identifier">status</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/scotty-0.22-096ace329b583f978238feb1f3bf62963d48129321c091220b496f242611c338/share/doc/html/src/Web.Scotty.html#json"><span class="hs-identifier">json</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-9"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/http-types-0.12.4-f4f2a4dfaab8d2aa4408b5694a4e00eaa17af10ff0338296c8a69abe97ddd9e5/share/doc/html/src/Network.HTTP.Types.Status.html"><span class="hs-identifier">Network.HTTP.Types.Status</span></a></span><span>
+</span><span id="line-10"></span><span>
+</span><span id="line-11"></span><span class="hs-keyword">data</span><span> </span><span id="ErrorResponse"><span class="annot"><a href="ApiError.html#ErrorResponse"><span class="hs-identifier hs-var">ErrorResponse</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ErrorResponse"><span class="annot"><a href="ApiError.html#ErrorResponse"><span class="hs-identifier hs-var">ErrorResponse</span></a></span></span><span>
+</span><span id="line-12"></span><span>    </span><span class="hs-special">{</span><span> </span><span id="errorMessage"><span class="annot"><span class="annottext">ErrorResponse -&gt; String
+</span><a href="ApiError.html#errorMessage"><span class="hs-identifier hs-var hs-var">errorMessage</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-13"></span><span>    </span><span class="hs-special">,</span><span> </span><span id="errorCode"><span class="annot"><span class="annottext">ErrorResponse -&gt; String
+</span><a href="ApiError.html#errorCode"><span class="hs-identifier hs-var hs-var">errorCode</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-14"></span><span>    </span><span class="hs-special">}</span><span> </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679120068"><span id="local-6989586621679120070"><span class="annot"><span class="annottext">(forall x. ErrorResponse -&gt; Rep ErrorResponse x)
+-&gt; (forall x. Rep ErrorResponse x -&gt; ErrorResponse)
+-&gt; Generic ErrorResponse
+forall x. Rep ErrorResponse x -&gt; ErrorResponse
+forall x. ErrorResponse -&gt; Rep ErrorResponse x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. ErrorResponse -&gt; Rep ErrorResponse x
+from :: forall x. ErrorResponse -&gt; Rep ErrorResponse x
+$cto :: forall x. Rep ErrorResponse x -&gt; ErrorResponse
+to :: forall x. Rep ErrorResponse x -&gt; ErrorResponse
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679120074"><span id="local-6989586621679120082"><span id="local-6989586621679120086"><span class="annot"><span class="annottext">Int -&gt; ErrorResponse -&gt; ShowS
+[ErrorResponse] -&gt; ShowS
+ErrorResponse -&gt; String
+(Int -&gt; ErrorResponse -&gt; ShowS)
+-&gt; (ErrorResponse -&gt; String)
+-&gt; ([ErrorResponse] -&gt; ShowS)
+-&gt; Show ErrorResponse
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; ErrorResponse -&gt; ShowS
+showsPrec :: Int -&gt; ErrorResponse -&gt; ShowS
+$cshow :: ErrorResponse -&gt; String
+show :: ErrorResponse -&gt; String
+$cshowList :: [ErrorResponse] -&gt; ShowS
+showList :: [ErrorResponse] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-15"></span><span>
+</span><span id="line-16"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679120091"><span id="local-6989586621679120097"><span id="local-6989586621679120100"><span id="local-6989586621679120103"><span id="local-6989586621679120106"><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/aeson-2.2.3.0-207b463d56e2438e5f28ad4b8a129a9a26724478faa2b25c04fb6651dc643d56/share/doc/html/src/Data.Aeson.Types.ToJSON.html#ToJSON"><span class="hs-identifier hs-type">ToJSON</span></a></span><span> </span><span class="annot"><a href="ApiError.html#ErrorResponse"><span class="hs-identifier hs-type">ErrorResponse</span></a></span></span></span></span></span></span><span>
+</span><span id="line-17"></span><span>
+</span><span id="line-18"></span><span class="hs-keyword">data</span><span> </span><span id="ApiError"><span class="annot"><a href="ApiError.html#ApiError"><span class="hs-identifier hs-var">ApiError</span></a></span></span><span> </span><span>
+</span><span id="line-19"></span><span>    </span><span class="hs-glyph">=</span><span> </span><span id="InvalidRequest"><span class="annot"><a href="ApiError.html#InvalidRequest"><span class="hs-identifier hs-var">InvalidRequest</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-20"></span><span>    </span><span class="hs-glyph">|</span><span> </span><span id="ServiceUnavailable"><span class="annot"><a href="ApiError.html#ServiceUnavailable"><span class="hs-identifier hs-var">ServiceUnavailable</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-21"></span><span>    </span><span class="hs-glyph">|</span><span> </span><span id="InternalError"><span class="annot"><a href="ApiError.html#InternalError"><span class="hs-identifier hs-var">InternalError</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-22"></span><span>    </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679120208"><span id="local-6989586621679120217"><span id="local-6989586621679120221"><span class="annot"><span class="annottext">Int -&gt; ApiError -&gt; ShowS
+[ApiError] -&gt; ShowS
+ApiError -&gt; String
+(Int -&gt; ApiError -&gt; ShowS)
+-&gt; (ApiError -&gt; String) -&gt; ([ApiError] -&gt; ShowS) -&gt; Show ApiError
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; ApiError -&gt; ShowS
+showsPrec :: Int -&gt; ApiError -&gt; ShowS
+$cshow :: ApiError -&gt; String
+show :: ApiError -&gt; String
+$cshowList :: [ApiError] -&gt; ShowS
+showList :: [ApiError] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-23"></span><span>
+</span><span id="line-24"></span><span class="annot"><a href="ApiError.html#toErrorResponse"><span class="hs-identifier hs-type">toErrorResponse</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ApiError.html#ApiError"><span class="hs-identifier hs-type">ApiError</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ApiError.html#ErrorResponse"><span class="hs-identifier hs-type">ErrorResponse</span></a></span><span>
+</span><span id="line-25"></span><span id="toErrorResponse"><span class="annot"><span class="annottext">toErrorResponse :: ApiError -&gt; ErrorResponse
+</span><a href="ApiError.html#toErrorResponse"><span class="hs-identifier hs-var hs-var">toErrorResponse</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ApiError.html#InvalidRequest"><span class="hs-identifier hs-type">InvalidRequest</span></a></span><span> </span><span id="local-6989586621679120224"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679120224"><span class="hs-identifier hs-var">msg</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; ErrorResponse
+</span><a href="ApiError.html#ErrorResponse"><span class="hs-identifier hs-var">ErrorResponse</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679120224"><span class="hs-identifier hs-var">msg</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;INVALID_REQUEST&quot;</span></span><span>
+</span><span id="line-26"></span><span class="annot"><a href="ApiError.html#toErrorResponse"><span class="hs-identifier hs-var">toErrorResponse</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ApiError.html#ServiceUnavailable"><span class="hs-identifier hs-type">ServiceUnavailable</span></a></span><span> </span><span id="local-6989586621679120225"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679120225"><span class="hs-identifier hs-var">msg</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; ErrorResponse
+</span><a href="ApiError.html#ErrorResponse"><span class="hs-identifier hs-var">ErrorResponse</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679120225"><span class="hs-identifier hs-var">msg</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;SERVICE_UNAVAILABLE&quot;</span></span><span>
+</span><span id="line-27"></span><span class="annot"><a href="ApiError.html#toErrorResponse"><span class="hs-identifier hs-var">toErrorResponse</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ApiError.html#InternalError"><span class="hs-identifier hs-type">InternalError</span></a></span><span> </span><span id="local-6989586621679120226"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679120226"><span class="hs-identifier hs-var">msg</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; ErrorResponse
+</span><a href="ApiError.html#ErrorResponse"><span class="hs-identifier hs-var">ErrorResponse</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679120226"><span class="hs-identifier hs-var">msg</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;INTERNAL_ERROR&quot;</span></span><span>
+</span><span id="line-28"></span><span>
+</span><span id="line-29"></span><span class="annot"><a href="ApiError.html#toHttpStatus"><span class="hs-identifier hs-type">toHttpStatus</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ApiError.html#ApiError"><span class="hs-identifier hs-type">ApiError</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/http-types-0.12.4-f4f2a4dfaab8d2aa4408b5694a4e00eaa17af10ff0338296c8a69abe97ddd9e5/share/doc/html/src/Network.HTTP.Types.Status.html#Status"><span class="hs-identifier hs-type">Status</span></a></span><span>
+</span><span id="line-30"></span><span id="toHttpStatus"><span class="annot"><span class="annottext">toHttpStatus :: ApiError -&gt; Status
+</span><a href="ApiError.html#toHttpStatus"><span class="hs-identifier hs-var hs-var">toHttpStatus</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ApiError.html#InvalidRequest"><span class="hs-identifier hs-type">InvalidRequest</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-identifier">_</span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Status
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/http-types-0.12.4-f4f2a4dfaab8d2aa4408b5694a4e00eaa17af10ff0338296c8a69abe97ddd9e5/share/doc/html/src/Network.HTTP.Types.Status.html#status400"><span class="hs-identifier hs-var">status400</span></a></span><span>
+</span><span id="line-31"></span><span class="annot"><a href="ApiError.html#toHttpStatus"><span class="hs-identifier hs-var">toHttpStatus</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ApiError.html#ServiceUnavailable"><span class="hs-identifier hs-type">ServiceUnavailable</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-identifier">_</span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Status
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/http-types-0.12.4-f4f2a4dfaab8d2aa4408b5694a4e00eaa17af10ff0338296c8a69abe97ddd9e5/share/doc/html/src/Network.HTTP.Types.Status.html#status503"><span class="hs-identifier hs-var">status503</span></a></span><span>
+</span><span id="line-32"></span><span class="annot"><a href="ApiError.html#toHttpStatus"><span class="hs-identifier hs-var">toHttpStatus</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ApiError.html#InternalError"><span class="hs-identifier hs-type">InternalError</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-identifier">_</span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Status
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/http-types-0.12.4-f4f2a4dfaab8d2aa4408b5694a4e00eaa17af10ff0338296c8a69abe97ddd9e5/share/doc/html/src/Network.HTTP.Types.Status.html#status500"><span class="hs-identifier hs-var">status500</span></a></span><span>
+</span><span id="line-33"></span><span>
+</span><span id="line-34"></span><span class="annot"><a href="ApiError.html#handleError"><span class="hs-identifier hs-type">handleError</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ApiError.html#ApiError"><span class="hs-identifier hs-type">ApiError</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="file:///home/gian/.cabal/store/ghc-9.6.7/scotty-0.22-096ace329b583f978238feb1f3bf62963d48129321c091220b496f242611c338/share/doc/html/src/Web.Scotty.html#ActionM"><span class="hs-identifier hs-type">ActionM</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-35"></span><span id="handleError"><span class="annot"><span class="annottext">handleError :: ApiError -&gt; ActionM ()
+</span><a href="ApiError.html#handleError"><span class="hs-identifier hs-var hs-var">handleError</span></a></span></span><span> </span><span id="local-6989586621679120232"><span class="annot"><span class="annottext">ApiError
+</span><a href="#local-6989586621679120232"><span class="hs-identifier hs-var">err</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-36"></span><span>    </span><span class="annot"><span class="annottext">Status -&gt; ActionM ()
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/scotty-0.22-096ace329b583f978238feb1f3bf62963d48129321c091220b496f242611c338/share/doc/html/src/Web.Scotty.html#status"><span class="hs-identifier hs-var">status</span></a></span><span> </span><span class="annot"><span class="annottext">(Status -&gt; ActionM ()) -&gt; Status -&gt; ActionM ()
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">ApiError -&gt; Status
+</span><a href="ApiError.html#toHttpStatus"><span class="hs-identifier hs-var">toHttpStatus</span></a></span><span> </span><span class="annot"><span class="annottext">ApiError
+</span><a href="#local-6989586621679120232"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-37"></span><span>    </span><span class="annot"><span class="annottext">ErrorResponse -&gt; ActionM ()
+forall a. ToJSON a =&gt; a -&gt; ActionM ()
+</span><a href="file:///home/gian/.cabal/store/ghc-9.6.7/scotty-0.22-096ace329b583f978238feb1f3bf62963d48129321c091220b496f242611c338/share/doc/html/src/Web.Scotty.html#json"><span class="hs-identifier hs-var">json</span></a></span><span> </span><span class="annot"><span class="annottext">(ErrorResponse -&gt; ActionM ()) -&gt; ErrorResponse -&gt; ActionM ()
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">ApiError -&gt; ErrorResponse
+</span><a href="ApiError.html#toErrorResponse"><span class="hs-identifier hs-var">toErrorResponse</span></a></span><span> </span><span class="annot"><span class="annottext">ApiError
+</span><a href="#local-6989586621679120232"><span class="hs-identifier hs-var">err</span></a></span><span>
+</span><span id="line-38"></span></pre></body></html>
