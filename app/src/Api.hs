@@ -1,20 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Main where
 
 import Web.Scotty
-import BitonicModels (BitonicRequest(..), BitonicResponse(..))
-import BitonicService (generateBitonic)
+import BitonicModels (BitonicRequest(..))
+import BitonicService (generateBitonic, ServiceError(..))
+import ApiError (ApiError(..), handleError)
 import qualified Database.Redis as Redis
-import Control.Exception (try, SomeException)
+import Control.Exception (SomeException, try)
 import Control.Monad.IO.Class (liftIO)
-import Data.Aeson (object, (.=))
-import qualified Data.Text.Lazy as TL
-import qualified Network.HTTP.Types.Status as H
-
--- Handler used by `catch` when JSON parsing throws
-badJson :: SomeException -> ActionM (Either String BitonicRequest)
-badJson _ = return (Left "Invalid JSON payload")
 
 main :: IO ()
 main = do
@@ -33,21 +28,15 @@ main = do
                 get "/" $ text "Bitonic Sequence Generator API"
 
                 post "/bitonic" $ do
-                    -- Safely parse JSON; on failure, respond 400 with JSON error
-                    eReq <- (Right <$> (jsonData :: ActionM BitonicRequest)) `catch` badJson
+                    req <- (jsonData :: ActionM BitonicRequest) `Web.Scotty.catch` (\(_ :: SomeException) -> do
+                        handleError (InvalidRequest "Invalid JSON format or invalid field types")
+                        finish)
+                    result <- liftIO $ generateBitonic conn req
+                    case result of
+                        Right response -> json response
+                        Left err -> handleServiceError err
 
-                    case eReq of
-                        Left errMsg -> do
-                            status H.status400
-                            json $ object ["error" .= errMsg]
-
-                        Right req -> do
-                            -- Catch IO/Redis/service exceptions; on failure, respond 500
-                            eResp <- liftIO (try (generateBitonic conn req))
-                                       :: ActionM (Either SomeException BitonicResponse)
-                            case eResp of
-                                Left err -> do
-                                    status H.status500
-                                    json $ object ["error" .= TL.pack (show err)]
-                                Right response ->
-                                    json response
+handleServiceError :: ServiceError -> ActionM ()
+handleServiceError (InvalidParameters msg) = handleError $ InvalidRequest msg
+handleServiceError (RedisError msg) = handleError $ ServiceUnavailable msg
+handleServiceError (UnknownError msg) = handleError $ InternalError msg
