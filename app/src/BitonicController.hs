@@ -5,9 +5,9 @@ module BitonicController (routes) where
 
 import Web.Scotty
 import BitonicModels (BitonicRequest(..))
-import BitonicService (generateBitonic, ServiceError(..))
+import BitonicService (generateBitonic)
 import AppContext (AppEnv, runApp)
-import ApiError (ApiError(..), handleError)
+import ApiError (ApiError(..), handleError, handleServiceError)
 import Control.Exception (SomeException)
 import Control.Monad.IO.Class (liftIO)
 
@@ -21,8 +21,3 @@ routes env = do
         case result of
             Right response -> json response
             Left err -> handleServiceError err
-
-handleServiceError :: ServiceError -> ActionM ()
-handleServiceError (InvalidParameters msg) = handleError $ InvalidRequest msg
-handleServiceError (RedisError msg) = handleError $ ServiceUnavailable msg
-handleServiceError (UnknownError msg) = handleError $ InternalError msg
