@@ -1,3 +1,8 @@
+# Bitonic Sequence Generator
+
+[![Documentation](https://img.shields.io/badge/docs-haddock-blue.svg)](https://nicolasholanda.github.io/bitonic-sequence-generator/)
+[![Haskell](https://img.shields.io/badge/language-Haskell-purple.svg)](https://www.haskell.org/)
+
 ## About
 This project is based on the [article about generating bitonic sequences](https://www.geeksforgeeks.org/dsa/generate-bitonic-sequence-of-length-n-from-integers-in-a-given-range/), 
 
