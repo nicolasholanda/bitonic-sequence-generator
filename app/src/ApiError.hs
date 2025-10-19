@@ -7,6 +7,7 @@ import GHC.Generics
 import Data.Aeson (ToJSON)
 import Web.Scotty (ActionM, status, json)
 import Network.HTTP.Types.Status
+import BitonicService (ServiceError(..))
 
 data ErrorResponse = ErrorResponse
     { errorMessage :: String
@@ -35,3 +36,8 @@ handleError :: ApiError -> ActionM ()
 handleError err = do
     status $ toHttpStatus err
     json $ toErrorResponse err
+
+handleServiceError :: ServiceError -> ActionM ()
+handleServiceError (InvalidParameters msg) = handleError $ InvalidRequest msg
+handleServiceError (RedisError msg) = handleError $ ServiceUnavailable msg
+handleServiceError (UnknownError msg) = handleError $ InternalError msg
