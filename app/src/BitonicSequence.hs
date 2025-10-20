@@ -41,9 +41,7 @@ bitonicArray n l r
             ascending = if n <= 5 
                        then [r - 1, r]
                        else [l .. l + mid - 1]
-            descendingStart = if n <= 5 
-                             then r - 1  -- For n=5: starts at 9
-                             else r - 1  -- For n=7: starts at 4 (r-1=5-1=4)
+            descendingStart = r - 1
             descendingCount = n - length ascending
             descending = take descendingCount [descendingStart, descendingStart - 1 .. l]
             
